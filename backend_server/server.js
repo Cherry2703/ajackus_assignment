@@ -101,7 +101,7 @@ app.put('/users', async (request, response) => {
 
             // If email is already in use, return an error
             if (emailExists) {
-                return response.status(409).json({ error: "Email already in use by another user." });
+                return response.status(409).json({ error: "Email already in use..." });
             }
         }
 

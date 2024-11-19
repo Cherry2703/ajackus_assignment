@@ -97,8 +97,6 @@ const handleUpdateUser = async () => {
       setError('All fields are required.');
       return;
     }
-  
-    try {
       const response = await fetch(`https://ajackus-assignment.onrender.com/users`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -123,10 +121,6 @@ const handleUpdateUser = async () => {
       setShowEditModal(false); // Close the modal
       setError(''); // Clear any existing error
   
-    } catch (err) {
-      console.error('Error while updating user:', err);
-      setError('An error occurred while updating the user. Please try again later.');
-    }
   };
   
 

@@ -56,37 +56,75 @@ const Home = () => {
   };
 
 
+// const handleUpdateUser = async () => {
+
+//     console.log(editUser);
+//     // Ensure all fields are filled before proceeding
+//     if (!editUser.firstName || !editUser.lastName || !editUser.department) {
+//       setError('All fields are required.');
+//       return;
+//     }
+//     try {
+//       const response = await fetch('https://ajackus-assignment.onrender.com/users', {
+//         method: 'PUT',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify(editUser), // Pass the whole editUser object if structured correctly
+//       });
+  
+//       // Check if the response is okay
+      
+//         // Parse the response only if it contains valid JSON
+//         const data = await response.json();
+//         console.log('Update response:', data);
+  
+//         fetchUsers(); // Refresh the users list
+//         setShowEditModal(false); // Close the modal
+//         setError(''); // Clear any existing error
+      
+//     } catch (err) {
+//       console.error(err);
+//       setError('An error occurred while updating the user. Please try again later.');
+//     }
+//   };
+  
+
+
 const handleUpdateUser = async () => {
-
-    console.log(editUser);
-    
-
+    console.log('Updating user:', editUser);
+  
     // Ensure all fields are filled before proceeding
     if (!editUser.firstName || !editUser.lastName || !editUser.department) {
       setError('All fields are required.');
       return;
     }
   
-   
     try {
-      const response = await fetch('https://ajackus-assignment.onrender.com/users', {
+      const response = await fetch(`https://ajackus-assignment.onrender.com/users`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(editUser), // Pass the whole editUser object if structured correctly
+        body: JSON.stringify({
+          userId:editUser.userId,
+          firstName: editUser.firstName,
+          lastName: editUser.lastName,
+          department: editUser.department,
+        }), // Ensure only relevant data is sent
       });
   
-      // Check if the response is okay
-      
-        // Parse the response only if it contains valid JSON
-        const data = await response.json();
-        console.log('Update response:', data);
+      // Check if the response is okay and handle JSON parsing safely
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
   
-        fetchUsers(); // Refresh the users list
-        setShowEditModal(false); // Close the modal
-        setError(''); // Clear any existing error
-      
+      // Parse response if it's valid JSON
+      const data = await response.json();
+      console.log('Update response:', data);
+  
+      fetchUsers(); // Refresh the users list
+      setShowEditModal(false); // Close the modal
+      setError(''); // Clear any existing error
+  
     } catch (err) {
-      console.error(err);
+      console.error('Error while updating user:', err);
       setError('An error occurred while updating the user. Please try again later.');
     }
   };

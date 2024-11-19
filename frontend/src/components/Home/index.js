@@ -69,7 +69,7 @@ const handleUpdateUser = async () => {
   
    
     try {
-      const response = await fetch('http://localhost:8080/users', {
+      const response = await fetch('https://ajackus-assignment.onrender.com/users', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(editUser), // Pass the whole editUser object if structured correctly

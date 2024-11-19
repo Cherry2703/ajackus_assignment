@@ -10,7 +10,7 @@ const Home = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [newUser, setNewUser] = useState({ firstName: '', lastName: '', email: '', department: '' });
-  const [editUser, setEditUser] = useState({ userId: '', firstName: '', lastName: '', email: '', department: '' });
+  const [editUser, setEditUser] = useState({ userId: '', firstName: '', lastName: '', department: '' });
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -24,6 +24,7 @@ const Home = () => {
   };
 
   const handleAddUser = async () => {
+    console.log(newUser)
     const response = await fetch('https://ajackus-assignment.onrender.com/users', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -54,25 +55,45 @@ const Home = () => {
     setShowEditModal(true);
   };
 
-  const handleUpdateUser = async () => {
-    const existingUser = users.find((user) => user.email === editUser.email);
 
-    if (existingUser && existingUser.userId !== editUser.userId) {
-      setError('Email is already in use');
+const handleUpdateUser = async () => {
+
+    console.log(editUser);
+    
+
+    // Ensure all fields are filled before proceeding
+    if (!editUser.firstName || !editUser.lastName || !editUser.department) {
+      setError('All fields are required.');
       return;
     }
-
-    const response = await fetch('https://ajackus-assignment.onrender.com/users', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId: editUser.userId, updatedUser: editUser }),
-    });
-
-    if (response.ok) {
-      fetchUsers();
-      setShowEditModal(false);
+  
+   
+    try {
+      const response = await fetch('http://localhost:8080/users', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editUser), // Pass the whole editUser object if structured correctly
+      });
+  
+      // Check if the response is okay
+      
+        // Parse the response only if it contains valid JSON
+        const data = await response.json();
+        console.log('Update response:', data);
+  
+        fetchUsers(); // Refresh the users list
+        setShowEditModal(false); // Close the modal
+        setError(''); // Clear any existing error
+      
+    } catch (err) {
+      console.error(err);
+      setError('An error occurred while updating the user. Please try again later.');
     }
   };
+  
+
+
+
 
   return (
     <Container>
@@ -167,7 +188,7 @@ const Home = () => {
               type="email"
               placeholder="Email"
               value={editUser.email}
-              onChange={(e) => setEditUser({ ...editUser, email: e.target.value })}
+              disabled
             />
             <Input
               type="text"
@@ -187,3 +208,12 @@ const Home = () => {
 };
 
 export default Home;
+
+
+
+
+
+
+
+
+

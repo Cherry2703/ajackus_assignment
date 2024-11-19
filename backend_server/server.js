@@ -83,44 +83,30 @@ app.post('/users', async (request, response) => {
 app.put('/users', async (request, response) => {
     try {
         // Destructure the request body to get user details
-        const { userId, firstName, lastName, email, department } = request.body;
+        const { userId, firstName, lastName, department } = request.body;
+        console.log(userId,firstName,lastName,department);
+        
 
         // Fetch the existing user from the database using userId
-        const getUser = `SELECT * FROM users WHERE userId = '${userId}';`;
-        const result = await db.get(getUser);
+        // const getUser = `SELECT * FROM users WHERE userId = '${userId}';`;
+        // const result = await db.get(getUser);
+        
 
-        // If the user is not found, return an error
-        if (!result) {
-            return response.status(404).send('User not found.');
-        }
-
-        // Check if the email is provided and if it exists in the database
-        if (email !== undefined) {
-            const checkEmail = `SELECT * FROM users WHERE email = '${email}';`;
-            const emailExists = await db.get(checkEmail);
-
-            // If email is already in use, return an error
-            if (emailExists) {
-                return response.status(409).json({ error: "Email already in use..." });
-            }
-        }
-
-        // Use existing values if the field is not provided in the request body
-        const updatedFirstName = firstName || result.firstName;
-        const updatedLastName = lastName || result.lastName;
-        const updatedEmail = email || result.email;
-        const updatedDepartment = department || result.department;
-
-        // SQL query to update the user details in the database
+        // // If the user is not found, return an error
+        // if (!result) {
+        //     return response.status(404).send('user not found.');
+        // }
         const query = `
             UPDATE users 
-            SET firstName = '${updatedFirstName}', lastName = '${updatedLastName}', 
-            email = '${updatedEmail}', department = '${updatedDepartment}' 
+            SET firstName = '${firstName}', lastName = '${lastName}', 
+            department = '${department}' 
             WHERE userId = '${userId}';
         `;
         await db.run(query); // Execute the update query
 
         response.status(200).send('User Updated Successfully...');
+        console.log('user updated');
+        
     } catch (error) {
         // Handle unexpected errors during the update process
         response.status(500).json({ error: "An unexpected error occurred." });

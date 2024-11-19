@@ -109,9 +109,9 @@ const handleUpdateUser = async () => {
       });
   
       // Check if the response is okay and handle JSON parsing safely
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status} - ${response.statusText}`);
-      }
+    //   if (!response.ok) {
+    //     throw new Error(`Error: ${response.status} - ${response.statusText}`);
+    //   }
   
       // Parse response if it's valid JSON
       const data = await response.json();

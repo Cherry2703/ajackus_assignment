@@ -57,6 +57,7 @@ const Home = () => {
 
 
 const handleUpdateUser = async () => {
+    console.log('Updating user:', editUser);
   
     // Ensure all fields are filled before proceeding
     if (!editUser.firstName || !editUser.lastName || !editUser.department) {
@@ -92,6 +93,7 @@ const handleUpdateUser = async () => {
       <Heading>Employee Management Dashboard</Heading>
       <AddUserButton onClick={() => setShowAddModal(true)}>Add User</AddUserButton>
 
+      {error && <ErrorText>{error}</ErrorText>}
 
       <TableContainer>
         <Table>
@@ -192,7 +194,7 @@ const handleUpdateUser = async () => {
               <CancelButton onClick={() => setShowEditModal(false)}>Cancel</CancelButton>
               <SubmitButton onClick={handleUpdateUser}>Update</SubmitButton>
             </ModalActions>
-            {error && <ErrorText>{error}</ErrorText>}
+                  {error && <ErrorText>{error}</ErrorText>}
 
           </ModalContent>
         </Modal>

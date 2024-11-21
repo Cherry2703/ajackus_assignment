@@ -39,6 +39,11 @@ const initializeDBAndServer = async () => {
 // Call the function to initialize DB and start server
 initializeDBAndServer();
 
+
+app.get('/',async(request,response)=>{
+    response.send('Ajackus Backend server is working go for different routes...')
+})
+
 // Route to fetch all users
 app.get('/users', async (request, response) => {
     try {
@@ -84,18 +89,7 @@ app.put('/users', async (request, response) => {
     try {
         // Destructure the request body to get user details
         const { userId, firstName, lastName, department } = request.body;
-        console.log(userId,firstName,lastName,department);
         
-
-        // Fetch the existing user from the database using userId
-        // const getUser = `SELECT * FROM users WHERE userId = '${userId}';`;
-        // const result = await db.get(getUser);
-        
-
-        // // If the user is not found, return an error
-        // if (!result) {
-        //     return response.status(404).send('user not found.');
-        // }
         const query = `
             UPDATE users 
             SET firstName = '${firstName}', lastName = '${lastName}', 
@@ -114,9 +108,6 @@ app.put('/users', async (request, response) => {
 });
 
 
-// 
-// 
-// 
 
 
 // Route to delete a user
